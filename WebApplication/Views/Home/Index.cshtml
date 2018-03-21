@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { name = "form" }))
+{
+    <h2>Index</h2>
+
+    <input type="text" class="form-control" placeholder="Nome" id="Nome" name= "Nome">
+
+    <input type="text" class="form-control" placeholder="Age" id="Age" name="Age">
+
+    <button type="submit" style="width: 100px" class="btn btn-success" value="Entrar">Entrar</button>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

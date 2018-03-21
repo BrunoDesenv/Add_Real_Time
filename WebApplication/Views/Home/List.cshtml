@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "view";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script src="//js.pusher.com/4.0/pusher.min.js"></script>
+
+
+<h2>Real-Time Table</h2>
+
+
+<table class="table" id="app">
+    <tr>
+        <th>
+            Code
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Age
+        </th>
+
+    </tr>
+
+
+    <tr v-for="(mov, index) in sorted_users">
+        <td>
+            {{index+1}}
+        </td>
+        <td>
+            {{mov.Name}}
+        </td>
+        <td>
+            {{mov.Age}}
+        </td>
+    </tr>
+
+
+</table>
+<script>
+        var pusher = new Pusher('a5935c2b82279378ad4d', {
+            cluster: 'us2',
+            encrypted: true
+        });
+
+        Pusher.logToConsole = true;
+
+        var my_channel = pusher.subscribe('chat');
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                users: []
+            },
+            created: function () {
+                this.listen();
+            },
+            methods: {
+                listen: function () {
+                    debugger;
+                    my_channel.bind("conversation", (data) => {
+                        this.users.push(data);
+                    })
+                }
+            },
+            computed: {
+                sorted_users: function () {
+                    var users = this.users;
+
+                    users = users.sort(function (a, b) {
+                        return a.Name < b.Name;
+                    });
+
+                    return users;
+                }
+            }
+        });
+</script>
